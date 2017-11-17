@@ -31,3 +31,14 @@ class TestJoSenses(unittest.TestCase):
 
         has_sense_program, sense = resp.has_sense('program', 'VB')
         assert not has_sense_program
+
+    def test_worse_trigram(self):
+        res = self.api.senses('better', holingtype='trigram')
+        has, sense = res.has_sense('worse')
+        assert has
+
+    def test_worse_trigram_stanford(self):
+        res = self.api.senses('mouse', pos='NN')
+        print(res._raw)
+        has, sense = res.has_sense('controller', pos='NN')
+        assert has

@@ -12,6 +12,7 @@ class TestJoCount(unittest.TestCase):
 
     def test_jo_count_nn(self):
         resp = self.api.jo_count('mouse', 'NN')
+
         assert resp.has_error() is False
         assert resp.count > 1000
 
