@@ -32,7 +32,7 @@ class TestJoBimText(unittest.TestCase):
         assert resp.method == 'getSimilarTerms'
 
     def test_jo_similar_trigram(self):
-        resp = self.api.similar('mouse', 'NN',holingtype='trigram')
+        resp = self.api.similar('mouse', 'NN', holingtype='trigram')
         assert resp.has_error() is False
         assert resp.holingtype_name == 'trigram'
         assert resp.method == 'getSimilarTerms'
@@ -50,20 +50,50 @@ class TestJoBimText(unittest.TestCase):
         for item in resp3:
             assert item['score'] < 100
 
-    def test_count(self):
-        resp = self.api.count('mouse', 'NN')
+    def test_jo_count(self):
+        resp = self.api.jo_count('mouse', 'NN')
         assert resp.has_error() is False
         assert resp.count > 1000
 
+    def test_bim_count(self):
+        resp = self.api.bim_count('mouse', 'NN', 'dobj', holingtype='trigram')
+        assert not resp.has_error()
+
+    def test_jo_bim_count(self):
+        resp = self.api.jo_bim_count('cat', 'NN', 'chase', 'VB', '-subj')
+        assert not resp.has_error()
+        assert resp.count is not None
+
+    def test_bim_score(self):
+        resp = self.api.bim_score('mouse', 'NN')
+        assert not resp.has_error()
+        assert len(resp.contexts) > 0
+
+    def test_jo_bim_score(self):
+        resp = self.api.jo_bim_score('cat', 'NN', 'chase', 'VB', '-subj')
+        assert not resp.has_error()
+
+    def test_isas(self):
+        resp = self.api.isas('mouse', 'NN', holingtype='stanford')
+        assert not resp.has_error()
+
+    def test_sense_cuis(self):
+        resp = self.api.sense_cuis('mouse', 'NN', holingtype='stanford')
+        assert not resp.has_error()
+
+
+    def test_similar_score(self):
+        resp = self.api.similar_score('mouse', 'NN', 'cat', 'NN')
+        assert resp.score > 70
+
     def test_count_vb(self):
-        resp = self.api.count('program', 'VB')
-        assert resp.has_error() is False
+        resp = self.api.jo_count('program', 'VB')
+        assert not resp.has_error()
         assert resp.count > 10
 
     def test_senses(self):
         resp = self.api.senses('mouse', 'NN')
-        pp(resp._raw)
-        assert resp.has_error() is False
+        assert not resp.has_error()
         assert len(resp.senses) == 2
         isas_mammal, mammal_sense = resp.isas('mammal')
         assert isas_mammal
@@ -74,5 +104,3 @@ class TestJoBimText(unittest.TestCase):
 
         has_sense_program, sense = resp.has_sense('program', 'VB')
         assert not has_sense_program
-
-

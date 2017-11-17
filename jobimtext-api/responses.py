@@ -15,9 +15,9 @@ class BaseResponse():
         return self.error is not None
 
 
-class JoResponse(BaseResponse):
+class MethodResponse(BaseResponse):
     def __init__(self, data):
-        super(JoResponse, self).__init__(data)
+        super(MethodResponse, self).__init__(data)
         self.method = data['method']
 
 
@@ -28,7 +28,7 @@ class HolingResponse(BaseResponse):
             self.holings = data['holings']
 
 
-class SimilarResponse(JoResponse):
+class SimilarResponse(MethodResponse):
     def __init__(self, data):
         super(SimilarResponse, self).__init__(data)
         if not self.has_error():
@@ -38,19 +38,26 @@ class SimilarResponse(JoResponse):
         return [e for e in self.results if min_score <= e['score'] < max_score]
 
 
-class CountResponse(JoResponse):
+class CountResponse(MethodResponse):
     def __init__(self, data):
         super(CountResponse, self).__init__(data)
         self.count = data['result']['count']
 
-class SensesResponse(JoResponse):
+
+class SimilarScoreResponse(MethodResponse):
+    def __init__(self, data):
+        super(SimilarScoreResponse, self).__init__(data)
+        self.score = data['result']['score']
+
+
+class SensesResponse(MethodResponse):
     class Sense():
         def __init__(self, data):
             self.cui = data['cui']
             self.isas = data['isas']
             self.senses = data['senses']
 
-    def __init__(self,data):
+    def __init__(self, data):
         super(SensesResponse, self).__init__(data)
         self.senses = [SensesResponse.Sense(s) for s in data['result']]
 
@@ -70,3 +77,14 @@ class SensesResponse(JoResponse):
                     return True, sense
         return False, None
 
+
+class ContextScoreResponse(MethodResponse):
+    class Context():
+        def __init__(self, data):
+            self.count = data['count']
+            self.key = data['key']
+            self.score = data['score']
+
+    def __init__(self, data):
+        super(ContextScoreResponse, self).__init__(data)
+        self.contexts = [ContextScoreResponse.Context(d) for d in data['results']]
