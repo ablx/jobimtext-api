@@ -2,8 +2,9 @@ import sys
 
 
 class BaseResponse():
-    def __init__(self, data):
+    def __init__(self, url, data):
         self._raw = data
+        self.url = str(url)
         self.error = data['error']
         if not self.has_error():
             self.holingtype = data['holingtype']
@@ -16,21 +17,21 @@ class BaseResponse():
 
 
 class MethodResponse(BaseResponse):
-    def __init__(self, data):
-        super(MethodResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(MethodResponse, self).__init__(url, data)
         self.method = data['method']
 
 
 class HolingResponse(BaseResponse):
-    def __init__(self, data):
-        super(HolingResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(HolingResponse, self).__init__(url, data)
         if not self.has_error():
             self.holings = data['holings']
 
 
 class SimilarResponse(MethodResponse):
-    def __init__(self, data):
-        super(SimilarResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(SimilarResponse, self).__init__(url, data)
         if not self.has_error():
             self.results = data['results']
 
@@ -39,14 +40,14 @@ class SimilarResponse(MethodResponse):
 
 
 class CountResponse(MethodResponse):
-    def __init__(self, data):
-        super(CountResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(CountResponse, self).__init__(url, data)
         self.count = data['result']['count']
 
 
 class SimilarScoreResponse(MethodResponse):
-    def __init__(self, data):
-        super(SimilarScoreResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(SimilarScoreResponse, self).__init__(url, data)
         self.score = data['result']['score']
 
 
@@ -57,8 +58,8 @@ class SensesResponse(MethodResponse):
             self.isas = data['isas']
             self.senses = data['senses']
 
-    def __init__(self, data):
-        super(SensesResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(SensesResponse, self).__init__(url, data)
         self.senses = [SensesResponse.Sense(s) for s in data['result']]
 
     def isas(self, term):
@@ -85,6 +86,6 @@ class ContextScoreResponse(MethodResponse):
             self.key = data['key']
             self.score = data['score']
 
-    def __init__(self, data):
-        super(ContextScoreResponse, self).__init__(data)
+    def __init__(self, url, data):
+        super(ContextScoreResponse, self).__init__(url, data)
         self.contexts = [ContextScoreResponse.Context(d) for d in data['results']]

@@ -30,8 +30,16 @@ class TestJoBimText(unittest.TestCase):
 
     def test_jo_similar(self):
         resp = self.api.similar('mouse', 'NN')
+        print(resp.url)
         assert resp.has_error() is False
         assert resp.holingtype_name == 'stanford'
+        assert resp.method == 'getSimilarTerms'
+
+    def test_jo_similar_better(self):
+        resp = self.api.similar('better', pos=None, url_params={'numberOfEntries':1000}, holingtype='trigram')
+        print(resp._raw)
+        assert resp.has_error() is False
+        assert resp.holingtype_name == 'trigram'
         assert resp.method == 'getSimilarTerms'
 
     def test_jo_similar_trigram(self):
