@@ -50,7 +50,7 @@ class SimilarResponse(ResultCountMixin, MethodMixin, BaseResponse):
         :param max_score: max score
         :return:
         """
-        return [SimilarResponse.SimilarTerm(e) for e in self.results if min_score <= e.score < max_score]
+        return [e for e in self.results if min_score <= e.score < max_score]
 
     class SimilarTerm:
         def __init__(self, data):

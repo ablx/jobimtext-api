@@ -39,6 +39,5 @@ class TestJoSenses(unittest.TestCase):
 
     def test_worse_trigram_stanford(self):
         res = self.api.senses('mouse', pos='NN')
-        print(res._raw)
         has, sense = res.has_sense('controller', pos='NN')
         assert has
