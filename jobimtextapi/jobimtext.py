@@ -1,5 +1,7 @@
+import sys
 import hammock
-from responses import *
+
+from jobimtextapi.responses import *
 
 
 class JoBimText():

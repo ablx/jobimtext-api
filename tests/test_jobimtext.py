@@ -1,7 +1,10 @@
 import unittest
-from jobimtext import JoBimText
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from jobimtextapi.jobimtext import JoBimText
 import requests
-from pprint import pprint as pp
 
 
 class TestJoBimText(unittest.TestCase):
@@ -80,7 +83,6 @@ class TestJoBimText(unittest.TestCase):
     def test_sense_cuis(self):
         resp = self.api.sense_cuis('mouse', 'NN', holingtype='stanford')
         assert not resp.has_error()
-
 
     def test_similar_score(self):
         resp = self.api.similar_score('mouse', 'NN', 'cat', 'NN')
