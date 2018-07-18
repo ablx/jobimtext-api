@@ -10,7 +10,7 @@ class JoBimText():
     def __init__(self, api_url='http://ltmaggie.informatik.uni-hamburg.de/jobimviz/ws'):
         self.api = hammock.Hammock(api_url)
 
-    def holing(self, sentence, url_params={}, holingtype='stanford'):
+    def holing(self, sentence, holingtype='stanford'):
         """
         :param sentence: the sentence
         :param holingtype: stanford or trigram; stanford is default
